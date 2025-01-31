@@ -1,0 +1,14 @@
+1. Cluster Architecture
+
+Suppose there are two ships (let’s consider one master node and the other one worker node). The master node is reponsible for handling all operation and it controlls the other worker nodes. Master node contains: 
+
+- Controller Manager (is a node controller, replication controller etc)
+- ETCD (stores information about the cluster e.g brain of cluster)
+- Kube Scheduller (responsible for scheduling applications or containers on pods)
+- Kube-API server (reponsible for ochestrating all operations in the cluster)
+
+Worker node contains:
+
+- Worker nodes hosts the application in container.
+- Kubelet is like the captain of the ship who listens to the commands (from Kube API server) and performs the following actions.
+- kube-proxy handles the communication between services in cluster
