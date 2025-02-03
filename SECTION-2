@@ -1,3 +1,7 @@
+## SECTION-2
+
+Access labs: Link: https://uklabs.kodekloud.com/courses/labs-certified-kubernetes-administrator-with-practice-tests/
+
 1. Cluster Architecture
 
 Suppose there are two ships (let’s consider one master node and the other one worker node). The master node is reponsible for handling all operation and it controlls the other worker nodes. Master node contains: 
@@ -12,3 +16,50 @@ Worker node contains:
 - Worker nodes hosts the application in container.
 - Kubelet is like the captain of the ship who listens to the commands (from Kube API server) and performs the following actions.
 - kube-proxy handles the communication between services in cluster
+
+2. Docker vs ContainerD
+
+Docker was one of the most dominant containerization tool and so docker and kubernetes was tightly coupled. Moving forward kubernetes introduced OCI rules (included imagespec: how image should be built, runtimespec: how runtime should be configured) that whoever adheres to can work with kubernetes as CRI. Kubernetes removed the support for docker in 1.24 version. Three utilities that we are going to use moving forward:
+
+- ctr (for debugging containers)
+- crictl (Runs with all CRI runtimes)
+- nerdctl (For general purpose)
+
+3. ETCD For Beginners
+
+In tradition databases like SQL, data is strored in rows and columns format, in ETCD we can store data in key value pairs. Using key/value we can add additional information for respective pages without changing the whole table/column type. There are two etcd version majorly (v2, v3) we can install etcdctl and use it some basic example commands:
+
+- ./etcdctl put key1 value1
+- ./etcdctl get key1
+
+4. ETCD in Kubernetes
+
+ETCD stores the information about cluster which includes (Nodes, Pods, Configs, Secrets, Accounts, Roles, Bindings, other etc) everytime we run kubectl get command the information is retrieved from ETCD its like the brain of the cluster. Every change you make in cluster is stored in ETCD. 
+
+5. Kube-API Server
+
+Kube API server manages the whole server basically, we make request to this Kube API server and then Kuber-API server does its job.
+
+6. Kube Controller Manager
+
+A department that is reponsible for monitoring or managing take care of damage components within the system and taking system to desired state. 
+
+7. Kube Scheduler
+
+Kube Scheduler only manages on which node pod should be deployed, the rest of the work is done by kubelet as kubelet is responsible for creating pods. Scheduler filter nodes, rank nodes and check where pods should be deployed for example lets say sheduler check that pod requires 10 cpus, it will check which node has 10 or more cpus. In conclusion it will check the best ship to deliver container. If we isntall it using kubeadm it will be deployed as pod in kube-system namespace in master node. We can see options in /etc/kubernetes/manifests/kube-scheduler.yaml
+
+8. Kube Proxy
+Kube proxy is a service that runs on each node, its job is to look for new services and everytime a new service is created it creates appropriate rules to forward traffic to those services to the backend pods. Using iptables rules
+
+9. PODS
+It’s a smallest unit in a kubernetes cluster, our applications runs inside a pod as a container. Each POD contains 1 container but there are multi containers pods as well (rarely use case) though its possible. If we want to scale up as our users growing we dont create more containers inside pod instead we make more pods. So for scaling up we create more pods and for scaling down we delete existing pods. 
+
+10. ReplicaSet
+It is used to manage pods efficently, lets say we deploy a single pod and our application is running on it, what if the pod dies? our application will no longer be accessible. Replicaset or ReplicationController will be used to handle that, for example we can specify number of replicas and then it will manage those number of pods at a time, so if i specify 3 and 1 pod dies so 2 left, replicaset will automatically create a new pod to maintain the number of replicas as we specified. 
+
+Commands:
+- kubectl create -f replicaset.yaml
+- kubectl replace -f replicaset.yaml
+- kubectl scale -replicas=6 -f replicaset.yaml
+- kubectl get replicaset
+- kubectl delete replicaset replicaset
